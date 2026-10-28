@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Présentation EduAccess - Soutenance Équipe (5 Membres)</title>
+    <style>
+        :root {
+            --primary: #1E3A8A;
+            --primary-light: #3B82F6;
+            --accent: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --purple: #8B5CF6;
+            --teal: #0D9488;
+            --dark: #0F172A;
+            --light: #F8FAFC;
+            --card-bg: #FFFFFF;
+            --speaker-m1: #2563EB;
+            --speaker-m2: #7C3AED;
+            --speaker-m3: #059669;
+            --speaker-m4: #D97706;
+            --speaker-m5: #DC2626;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+        body { background-color: var(--dark); color: #334155; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+        
+        /* Header */
+        header {
+            background: #1E293B;
+            color: #F8FAFC;
+            padding: 10px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--primary-light);
+            z-index: 10;
+        }
+        .logo-title { font-size: 1.15rem; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+        .header-meta { font-size: 0.85rem; color: #94A3B8; display: flex; align-items: center; gap: 15px; }
+        .btn-speech-toggle {
+            background: linear-gradient(135deg, #4F46E5, #7C3AED);
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            transition: all 0.2s;
+        }
+        .btn-speech-toggle:hover { transform: translateY(-1px); filter: brightness(1.1); }
+        
+        /* Main slide deck */
+        main { flex: 1; position: relative; overflow: hidden; background: #0B1120; }
+        .slide {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            display: none;
+            padding: 30px 50px 80px 50px;
+            background: linear-gradient(135deg, #F8FAFC 0%, #EFF6FF 100%);
+            overflow-y: auto;
+        }
+        .slide.active { display: block; animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Speaker Badge Bar */
+        .speaker-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 8px 16px;
+            border-radius: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            margin-bottom: 20px;
+            border-left: 6px solid var(--primary-light);
+        }
+        .speaker-info { display: flex; align-items: center; gap: 10px; }
+        .speaker-tag {
+            padding: 4px 12px;
+            border-radius: 14px;
+            color: white;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+        .timing-tag {
+            font-size: 0.85rem;
+            color: #64748B;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        /* Slide Typography & Layouts */
+        h1 { font-size: 2.2rem; color: var(--primary); margin-bottom: 10px; }
+        h2 { font-size: 1.7rem; color: var(--primary); margin-bottom: 16px; border-bottom: 3px solid var(--primary-light); padding-bottom: 6px; display: inline-block; }
+        h3 { font-size: 1.15rem; color: #1E293B; margin-bottom: 8px; }
+        p { font-size: 1rem; line-height: 1.55; color: #334155; margin-bottom: 12px; }
+        
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 10px; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-top: 10px; }
+        .grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-top: 14px; }
+        
+        .card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 18px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            border-top: 4px solid var(--primary-light);
+        }
+        .card.accent { border-top-color: var(--accent); }
+        .card.warning { border-top-color: var(--warning); }
+        .card.danger { border-top-color: var(--danger); }
+        .card.purple { border-top-color: var(--purple); }
+        .card.teal { border-top-color: var(--teal); }
+        
+        .highlight-box {
+            background: #DBEAFE;
+            border-left: 5px solid var(--primary-light);
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin: 12px 0;
+            font-size: 0.95rem;
+        }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 12px; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid #E2E8F0; font-size: 0.9rem; }
+        th { background: #1E3A8A; color: white; font-weight: 600; }
+        tr:hover { background: #F1F5F9; }
+        
+        ul { margin-left: 20px; margin-bottom: 10px; }
+        li { font-size: 0.95rem; line-height: 1.5; margin-bottom: 5px; }
+        
+        /* Footer Controls */
+        footer {
+            background: #1E293B;
+            padding: 10px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #94A3B8;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            z-index: 10;
+            border-top: 1px solid #334155;
+        }
+        .controls { display: flex; gap: 10px; align-items: center; }
+        button.btn-nav {
+            background: var(--primary-light);
+            color: white;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        button.btn-nav:hover { background: var(--primary); }
+        button.btn-nav:disabled { background: #475569; cursor: not-allowed; }
+        .slide-counter { font-size: 0.9rem; font-weight: 600; color: #F8FAFC; }
+        
+        /* Speech / Teleprompter Panel */
+        #speechDrawer {
+            position: fixed;
+            bottom: 52px;
+            left: 0;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.96);
+            backdrop-filter: blur(8px);
+            color: #F8FAFC;
+            padding: 20px 40px;
+            border-top: 3px solid #7C3AED;
+            box-shadow: 0 -8px 24px rgba(0,0,0,0.4);
+            transform: translateY(110%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 20;
+            max-height: 38vh;
+            overflow-y: auto;
+        }
+        #speechDrawer.open { transform: translateY(0); }
+        .drawer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 6px;
+        }
+        .drawer-speaker-title { font-size: 1.05rem; font-weight: 700; color: #A78BFA; display: flex; align-items: center; gap: 8px; }
+        .drawer-close { background: none; border: none; color: #94A3B8; font-size: 1.3rem; cursor: pointer; }
+        .speech-text {
+            font-size: 1.1rem;
+            line-height: 1.65;
+            color: #E2E8F0;
+            font-style: normal;
+        }
+        .speech-text strong { color: #67E8F9; }
+        .speech-transition {
+            margin-top: 10px;
+            padding: 8px 12px;
+            background: rgba(59, 130, 246, 0.15);
+            border-left: 3px solid #3B82F6;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            color: #93C5FD;
+        }
+        
+        /* Member badge colors */
+        .bg-m1 { background-color: var(--speaker-m1); }
+        .bg-m2 { background-color: var(--speaker-m2); }
+        .bg-m3 { background-color: var(--speaker-m3); }
+        .bg-m4 { background-color: var(--speaker-m4); }
+        .bg-m5 { background-color: var(--speaker-m5); }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo-title">
+        <span>🎓 EduAccess</span>
+        <span style="font-size: 0.8rem; background: #3B82F6; padding: 3px 8px; border-radius: 12px;">Soutenance 5 Membres</span>
+    </div>
+    <div class="header-meta">
+        <span>EMSI • Pr. Soukaina Gouraguine</span>
+        <button class="btn-speech-toggle" onclick="toggleSpeech()">
+            <span>🎙️ Prompteur / Speech Orateur [S]</span>
+        </button>
+    </div>
+</header>
+
+<main>
+    <!-- ==================== SLIDE 1 : Titre (Membre 1) ==================== -->
+    <div class="slide active" data-speaker="Membre 1 — Chef de Projet & Data Engineer" data-tag="bg-m1" data-time="1 min"
+         data-speech="Bonjour à tous et bienvenue à la présentation du projet EduAccess. Nous sommes une équipe de 5 ingénieurs et nous avons développé une solution intelligente complète pour la détection précoce du risque de décrochage scolaire dans l'enseignement supérieur à distance. L'ensemble des 4 livrables du cahier des charges a été entièrement implémenté et validé. Je vais démarrer en vous présentant l'organisation de notre équipe et notre démarche globale.">
+        
+        <div class="speaker-bar" style="border-left-color: var(--speaker-m1);">
+            <div class="speaker-info">
+                <span class="speaker-tag bg-m1">👤 Membre 1 — Chef de Projet & Data Engineer</span>
+                <span style="font-weight: 600; font-size: 0.9rem;">Introduction & Cadrage</span>
+            </div>
+            <div class="timing-tag">⏱️ 1 min</div>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px;">
+            <div style="font-size: 3.5rem; margin-bottom: 8px;">🎓</div>
+            <h1 style="font-size: 2.8rem;">EduAccess</h1>
+            <p style="font-size: 1.35rem; color: #1E3A8A; font-weight: 600;">
+                Système Intelligent de Détection Précoce des Difficultés d'Apprentissage
+            </p>
+            <div style="max-width: 750px; margin: 25px auto; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08);">
+                <p><strong>Établissement :</strong> École Marocaine des Sciences de l'Ingénieur (EMSI)</p>
+                <p><strong>Module :</strong> Développement et déploiement d’applications intelligentes</p>
+                <p><strong>Encadrement :</strong> Pr. Soukaina Gouraguine</p>
+                <p><strong>Stack :</strong> Python, Scikit-Learn, FastAPI, Streamlit, Docker, Pytest</p>
+            </div>
+            <p style="color: #64748B; font-size: 0.95rem;">
+                Appuyez sur <strong>[S]</strong> ou le bouton violet en haut à droite pour afficher le <strong>discours mot-à-mot de l'orateur</strong>.
+            </p>
+        </div>
+    </div>
+
+    <!-- ==================== SLIDE 2 : Organisation de l'Équipe (Membre 1) ==================== -->
+    <div class="slide" data-speaker="Membre 1 — Chef de Projet & Data Engineer" data-tag="bg-m1" data-time="1 min 30"
+         data-speech="Pour mener à bien ce projet d'envergure, nous avons structuré le travail selon 5 responsabilités techniques claires. Pour ma part, je prends en charge la gestion du projet, le cadrage fonctionnel et l'ingénierie des données OULAD. Le Membre 2 est notre Lead Data Scientist responsable du Feature Engineering et de l'entraînement des modèles de classification. Le Membre 3 assure le développement de l'API REST de production avec FastAPI. Le Membre 4 a conçu l'interface utilisateur Streamlit et le moteur de recommandations. Enfin, le Membre 5 garantit la qualité logicielle avec 13 tests Pytest, la conteneurisation Docker et le bilan éthique. Passons maintenant à la problématique métier.">
+        
+        <div class="speaker-bar" style="border-left-color: var(--speaker-m1);">
+            <div class="speaker-info">
+                <span class="speaker-tag bg-m1">👤 Membre 1 — Chef de Projet & Data Engineer</span>
+                <span style="font-weight: 600; font-size: 0.9rem;">Organisation & Rôles de l'Équipe</span>
+            </div>
+            <div class="timing-tag">⏱️ 1 min 30</div>
+        </div>
+
+        <h2>Structure du Groupe & Répartition des Tâches</h2>
+        <p>Un découpage modulaire et collaboratif couvrant l'intégralité du cycle de vie du projet d'IA :</p>
+
+        <div class="grid-5">
+            <div class="card" style="border-top-color: var(--speaker-m1);">
+                <span class="speaker-tag bg-m1" style="font-size: 0.75rem;">Membre 1</span>
+                <h4 style="margin: 8px 0 4px 0; font-size: 0.95rem;">Data Engineering</h4>
+                <p style="font-size: 0.8rem; color: #64748B;">Cadrage, pipeline ETL Big Data, agrégation par chunks, dataset unifié.</p>
+                <div style="font-size: 0.75rem; color: #1E3A8A; font-weight: 600;">Slides 1, 2, 3, 4</div>
+            </div>
+
+            <div class="card" style="border-top-color: var(--speaker-m2);">
+                <span class="speaker-tag bg-m2" style="font-size: 0.75rem;">Membre 2</span>
+                <h4 style="margin: 8px 0 4px 0; font-size: 0.95rem;">Data Science</h4>
+                <p style="font-size: 0.8rem; color: #64748B;">Feature engineering, benchmark ML (3 modèles), CV 5-folds, métriques.</p>
+                <div style="font-size: 0.75rem; color: #7C3AED; font-weight: 600;">Slides 5, 6</div>
+            </div>
+
+            <div class="card" style="border-top-color: var(--speaker-m3);">
+                <span class="speaker-tag bg-m3" style="font-size: 0.75rem;">Membre 3</span>
+                <h4 style="margin: 8px 0 4px 0; font-size: 0.95rem;">Backend & API</h4>
+                <p style="font-size: 0.8rem; color: #64748B;">Architecture REST FastAPI, schémas Pydantic, endpoints unitaires et batch.</p>
+                <div style="font-size: 0.75rem; color: #059669; font-weight: 600;">Slides 7, 8</div>
+            </div>
+
+            <div class="card" style="border-top-color: var(--speaker-m4);">
+                <span class="speaker-tag bg-m4" style="font-size: 0.75rem;">Membre 4</span>
+                <h4 style="margin: 8px 0 4px 0; font-size: 0.95rem;">Frontend & UX</h4>
+                <p style="font-size: 0.8rem; color: #64748B;">Dashboard Streamlit, graphiques Plotly, moteur de recommandations tutorales.</p>
+                <div style="font-size: 0.75rem; color: #D97706; font-weight: 600;">Slides 9, 10</div>
+            </div>
+
+            <div class="card" style="border-top-color: var(--speaker-m5);">
+                <span class="speaker-tag bg-m5" style="font-size: 0.75rem;">Membre 5</span>
+                <h4 style="margin: 8px 0 4px 0; font-size: 0.95rem;">DevOps & Qualité</h4>
+                <p style="font-size: 0.8rem; color: #64748B;">13 tests Pytest, Docker Compose, CLI universelle, éthique & bilan livrables.</p>
+                <div style="font-size: 0.75rem; color: #DC2626; font-weight: 600;">Slides 11, 12, 13</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== SLIDE 3 : Contexte & Problématique (Membre 1) ==================== -->
+    <div class="slide" data-speaker="Membre 1 — Chef de Projet & Data Engineer" data-tag="bg-m1" data-time="1 min 30"
+         data-speech="Le point de départ d'EduAccess est un constat critique : dans les formations ouvertes et à distance, les signaux d'abandon sont silencieux. Lorsqu'un étudiant échoue à son examen terminal ou cesse de se connecter, il est déjà trop tard pour agir. La réponse apportée par EduAccess est d'exploiter les traces d'apprentissage numériques dès les 30 à 60 premiers jours afin de détecter les signaux faibles de décrochage. Rappelons la charte fondamentale du projet : EduAccess est conçu exclusivement comme un outil d'aide à la décision et d'accompagnement bienveillant pour les tuteurs, et JAMAIS comme un algorithme de sanction ou d'exclusion automatique.">
+        
+        <div class="speaker-bar" style="border-left-color: var(--speaker-m1);">
+            <div class="speaker-info">
+                <span class="speaker-tag bg-m1">👤 Membre 1 — Chef de Projet & Data Engineer</span>
+                <span style="font-weight: 600; font-size: 0.9rem;">Contexte & Problématique Métier</span>
+            </div>
+            <div class="timing-tag">⏱️ 1 min 30</div>
+        </div>
+
+        <h2>1. Contexte & Démarche Bienveillante</h2>
+        <p>Le décrochage et l'échec dans l'enseignement supérieur représentent un défi académique majeur :</p>
+
+        <div class="grid-2">
+            <div class="card warning">
+                <h3>⚠️ Le Constat Traditionnel</h3>
+                <ul>
+                    <li>Les difficultés ne sont formellement constatées qu'après les examens de fin de semestre.</li>
+                    <li>Il est alors souvent trop tard pour déployer un accompagnement efficace.</li>
+                    <li>Sentiment d'isolement des étudiants face aux plateformes numériques d'e-learning.</li>
+                </ul>
+            </div>
+            <div class="card accent">
+                <h3>🎯 La Réponse EduAccess</h3>
+                <ul>
+                    <li>Exploiter les <strong>traces d'apprentissage précoces</strong> (VLE, premières évaluations, inscriptions).</li>
+                    <li>Détecter les <strong>signaux faibles dès les 30 à 60 premiers jours</strong> de formation.</li>
+                    <li>Proposer des <strong>plans d'action individualisés</strong> pour guider l'action des tuteurs.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <strong>⚖️ Règle Fondamentale du Cahier des Charges :</strong> L'application constitue un outil d'aide à l'analyse et à la décision pédagogique bienveillante, et en aucun cas un système d'exclusion automatisée.
+        </div>
+    </div>
+
+    <!-- ==================== SLIDE 4 : Données OULAD & ETL (Membre 1) ==================== -->
+    <div class="slide" data-speaker="Membre 1 — Chef de Projet & Data Engineer" data-tag="bg-m1" data-time="2 min"
+         data-speech="Sur le plan des données, nous travaillons sur le dataset de référence OULAD. Il comprend 32 593 profils étudiants, plus de 173 000 notes d'évaluations et surtout la table studentVle.csv qui représente un défi Big Data : 10,6 millions de lignes d'interactions et 453 Mo sur disque. Pour éviter toute saturation de la mémoire vive, j'ai développé un pipeline ETL dans data_loader.py basé sur un découpage en blocs de 1 million de lignes avec Pandas. Ce chunking intelligent extrait les clics précoces à 30 jours et les jours d'activité en moins de 6 secondes chrono, générant le dataset consolidé processed_students.csv. Je passe maintenant la main à notre Lead Data Scientist pour la modélisation.">
+        
+        <div class="speaker-bar" style="border-left-color: var(--speaker-m1);">
+            <div class="speaker-info">
+                <span class="speaker-tag bg-m1">👤 Membre 1 — Chef de Projet & Data Engineer</span>
+                <span style="font-weight: 600; font-size: 0.9rem;">Dataset OULAD & Pipeline ETL Big Data</span>
+            </div>
+            <div class="timing-tag">⏱️ 2 min</div>
+        </div>
+
+        <h2>2. Données OULAD & Défi de Volumétrie</h2>
+        <p>L'Open University Learning Analytics Dataset (OULAD) regroupe 7 tables relationnelles :</p>
+
+        <div class="grid-3">
+            <div class="card">
+                <h3>👥 32 593 Étudiants</h3>
+                <p style="font-size: 0.9rem;">22 sessions de 7 cours (AAA à GGG), profils sociodémographiques et charge de crédits.</p>
+            </div>
+            <div class="card accent">
+                <h3>💻 10.6M d'Interactions VLE</h3>
+                <p style="font-size: 0.9rem;">Fichier <code>studentVle.csv</code> de 453 Mo. Historique quotidien de chaque clic sur les cours.</p>
+            </div>
+            <div class="card warning">
+                <h3>📝 173 912 Évaluations</h3>
+                <p style="font-size: 0.9rem;">Notes aux devoirs continus (TMA/CMA) et examens, dates limites et soumissions en retard.</p>
+            </div>
+        </div>
+
+        <div class="card" style="margin-top: 14px; border-left: 5px solid var(--primary);">
+            <h3>⚡ Solution d'Ingestion Optimisée (<code>src/data_loader.py</code>)</h3>
+            <p style="font-size: 0.9rem;">
+                Traitement par morceaux (<em>chunking</em> de 1 000 000 lignes) avec Pandas. Calcul optimisé des clics avant début de cours (<code>date &lt; 0</code>), clics à 30 jours (<code>date &lt;= 30</code>) et jours actifs en <strong>moins de 6 secondes</strong>, puis mise en cache consolidée.
+            </p>
+        </div>
+        <div class="speech-transition">
+            ➡️ <strong>Transition :</strong> « Je passe la parole à <strong>Membre 2</strong> pour la conception des variables et l'entraînement des modèles. »
+        </div>
+    </div>
+
+    <!-- ==================== SLIDE 5 : Feature Engineering (Membre 2) ==================== -->
+    <div class="slide" data-speaker="Membre 2 — Lead Data Scientist & Modélisation" data-tag="bg-m2" data-time="2 min"
+         data-speech="Merci Membre 1. Une fois les données nettoyées, notre première priorité en Feature Engineering a été la prévention stricte du Data Leakage. Dans OULAD, la variable date_unregistration indique le jour précis d'abandon : la conserver donnerait un modèle parfait artificiellement, mais totalement inutile en production. Nous l'avons donc formellement bannie. Notre cible est binaire et parfaitement équilibrée : la classe 1 représente le risque d'échec ou d'abandon avec 52.8%, contre 47.2% de réussite. Nous avons extrait 22 caractéristiques réparties en 3 familles : l'engagement VLE précoce, les notes et retards initiaux, et les antécédents académiques.">
+        
+        <div class="speaker-bar" style="border-left-color: var(--speaker-m2);">
+            <div class="speaker-info">
+                <span class="speaker-tag bg-m2">👤 Membre 2 — Lead Data Scientist & Modélisation</span>
+                <span style="font-weight: 600; font-size: 0.9rem;">Feature Engineering & Prévention du Leakage</span>
+            </div>
+            <div class="timing-tag">⏱️ 2 min</div>
+        </div>
+
+        <h2>3. Feature Engineering & Détection Précoce</h2>
+        <div class="grid-2">
+            <div class="card">
+                <h3>🔍 22 Variables Clés Prédictives</h3>
+                <ul>
+                    <li><strong>Engagement VLE Précoce :</strong> <code>pre_course_clicks</code>, <code>early_30_clicks</code>, <code>active_days</code>, <code>total_clicks</code>.</li>
+                    <li><strong>Dynamique d'Évaluation :</strong> <code>early_assessments_count</code>, <code>early_avg_score</code>, <code>early_late_submissions</code>, <code>failed_assessments_count</code>.</li>
+                    <li><strong>Contexte Étudiant :</strong> <code>date_registration</code>, <code>studied_credits</code>, <code>num_of_prev_attempts</code>, <code>highest_education</code>, <code>imd_band</code>.</li>
+                </ul>
+            </div>
+            <div class="card danger">
+                <h3>🚫 Règle Anti-Leakage Stricte</h3>
+                <p>La variable <code>date_unregistration</code> a été <strong>strictement bannie</strong> du modèle. L'utiliser introduirait une fuite d'information car l'existence d'une date de désinscription équivaut directement à la cible d'abandon.</p>
+                <div class="highlight-box" style="margin-top: 10px;">
+                    <strong>Cible Binaire Équilibrée :</strong><br>
+                    • <strong>1 (À risque : Fail / Withdrawn)</strong> = 52.8%<br>
+                    • <strong>0 (En réussite : Pass / Distinction)</strong> = 47.2%
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== SLIDE 6 : Modèles ML & Benchmark (Membre 2) ==================== -->
+    <div class="slide" data-speaker="Membre 2 — Lead Data Scientist & Modélisation" data-tag="bg-m2" data-time="2 min"
+         data-speech="Pour retenir le meilleur algorithme, nous avons comparé trois familles de modèles sous validation croisée stratifiée à 5 plis : une Régression Logistique comme baseline, un Random Forest en bagging, et un HistGradientBoosting. Comme vous le voyez dans le tableau, le Gradient Boosting surpasse les autres avec 93.04% d'accuracy, 93.22% de F1-score et un ROC-AUC remarquable de 0.9812. En contexte pédagogique, notre priorité absolue était la précision sur la classe à risque : elle atteint 95.88% pour un rappel de 90.7%. Cela signifie que lorsqu'une alerte est levée, le tuteur peut intervenir en toute confiance sans risque d'erreur. Je cède la parole à Membre 3 pour l'architecture logicielle et l'API.">
+        
+        <div class="speaker-bar" style="border-left-color: var(--speaker-m2);">
+            <div class="speaker-info">
+                <span class="speaker-tag bg-m2">👤 Membre 2 — Lead Data Scientist & Modélisation</span>
+                <span style="font-weight: 600; font-size: 0.9rem;">Benchmark & Sélection du Modèle ML</span>
+            </div>
+            <div class="timing-tag">⏱️ 2 min</div>
+        </div>
+
+        <h2>4. Benchmark des Algorithmes de Classification</h2>
+        <p>Évaluation rigoureuse sous validation croisée stratifiée 5-folds :</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Modèle ML</th>
+                    <th>Accuracy</th>
+                    <th>Précision (Risque)</th>
+                    <th>Rappel (Risque)</th>
+                    <th>F1-Score</th>
+                    <th>ROC-AUC</th>
+                    <th>F1 (5-Fold CV)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Régression Logistique</strong> (Baseline)</td>
+                    <td>92.77%</td>
+                    <td>95.64%</td>
+                    <td>90.44%</td>
+                    <td>92.97%</td>
+                    <td>0.9735</td>
+                    <td>92.77%</td>
+                </tr>
+                <tr>
+                    <td><strong>Random Forest</strong> (Bagging)</td>
+                    <td>92.39%</td>
+                    <td>95.88%</td>
+                    <td>89.37%</td>
+                    <td>92.51%</td>
+                    <td>0.9787</td>
+                    <td>92.51%</td>
+                </tr>
+                <tr style="background: #EFF6FF; font-weight: bold; border-left: 4px solid #1E3A8A;">
+                    <td>🏆 <strong>HistGradientBoosting</strong> (Retenu)</td>
+                    <td><strong>93.04%</strong></td>
+                    <td><strong>95.88%</strong></td>
+                    <td><strong>90.70%</strong></td>
+                    <td><strong>93.22%</strong></td>
+                    <td><strong>0.9812</strong></td>
+                    <td><strong>93.22%</strong></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="card accent" style="margin-top: 14px;">
+            <h3>🔍 Facteurs Clés d'Explicabilité (Permutation Importance)</h3>
+            <p style="font-size: 0.9rem;">
+                <strong>1. Notes aux devoirs précoces (<code>early_avg_score</code>)</strong> | 
+                <strong>2. Activité à 30 jours (<code>early_30_clicks</code>)</strong> | 
+                <strong>3. Nombre d'évaluations manquées</strong> | 
+                <strong>4. Retards de soumission</strong>
+            </p>
+        </div>
+        <div class="speech-transition">
+            ➡️ <strong>Transition :</strong> « Je transmets la parole à <strong>Membre 3</strong> pour vous présenter l'architecture globale et l'API backend. »
+        </div>
+    </div>
+
+    <!-- ==================== SLIDE 7 : Architecture Système (Membre 3) ==================== -->
+    <div class="slide" data-speaker="Membre 3 — Ingénieur Backend & API" data-tag="bg-m3" data-time="1 min 30"
+         data-speech="Merci Membre 2. Un modèle prédictif n'est utile que s'il s'intègre harmonieusement dans un système informatique complet et découplé. Nous avons donc conçu une architecture modulaire en 5 piliers : l'ingestion ETL, le registre de modèles sérialisés au format Joblib, notre API REST développée sous FastAPI, le dashboard interactif Streamlit, et enfin la chaîne de test et de conteneurisation Docker. Cette séparation nette garantit que notre modèle peut être consommé aussi bien par notre propre interface que par le système de scolarité ou le Moodle de l'université.">
+        
+        <div class="speaker-bar" style="border-left-color: var(--speaker-m3);">
+            <div class="speaker-info">
+                <span class="speaker-tag bg-m3">👤 Membre 3 — Ingénieur Backend & API</span>
+                <span style="font-weight: 600; font-size: 0.9rem;">Architecture Modulaire du Système</span>
+            </div>
+            <div class="timing-tag">⏱️ 1 min 30</div>
+        </div>
+
+        <h2>5. Architecture Système Globale</h2>
+        <div class="card" style="text-align: center; padding: 16px;">
+            <p><strong>Architecture Modulaire à 5 Piliers Découplés :</strong></p>
+            <div class="grid-3" style="text-align: left; margin-top: 12px;">
+                <div class="card">
+                    <h4>1. Data Pipeline & ETL</h4>
+                    <p style="font-size: 0.85rem;"><code>data_loader.py</code> & <code>feature_engineering.py</code> avec pipelines Scikit-Learn.</p>
+                </div>
+                <div class="card accent">
+                    <h4>2. Model Registry</h4>
+                    <p style="font-size: 0.85rem;">Sérialisation Joblib des 3 modèles et sauvegarde des métriques dans <code>metrics.json</code>.</p>
+                </div>
+                <div class="card warning">
+                    <h4>3. REST API (FastAPI)</h4>
+                    <p style="font-size: 0.85rem;">Service backend asynchrone, validation Pydantic v2, Swagger UI interactif.</p>
+                </div>
+            </div>
+            <div class="grid-2" style="text-align: left; margin-top: 12px;">
+                <div class="card">
+                    <h4>4. Frontend Web (Streamlit)</h4>
+                    <p style="font-size: 0.85rem;">Dashboard interactif, visualisations Plotly, simulateur temps réel et recommandations pédagogiques.</p>
+                </div>
+                <div class="card accent">
+                    <h4>5. DevOps & Qualité</h4>
+                    <p style="font-size: 0.85rem;">13 tests unitaires Pytest, conteneurisation Docker & orchestration Docker Compose.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== SLIDE 8 : API REST FastAPI (Membre 3) ==================== -->
+    <div class="slide" data-speaker="Membre 3 — Ingénieur Backend & API" data-tag="bg-m3" data-time="2 min"
+         data-speech="Pour l'exposition du modèle, nous avons choisi FastAPI pour sa rapidité asynchrone native et sa documentation OpenAPI automatique. Nous avons sécurisé tous les contrats d'interface grâce aux schémas Pydantic v2 dans schemas.py, garantissant le typage strict, le contrôle des bornes et des valeurs par défaut robustes. L'API expose des endpoints de diagnostic technique comme /health et /metrics, mais surtout trois endpoints d'inférence : predict pour le calcul temps réel sur un étudiant unique, predict_batch pour évaluer un groupe, et predict_csv qui permet à un enseignant d'uploader toute sa classe d'un coup. Tout est testable en direct sur http://127.0.0.1:8000/docs. Je cède la parole à Membre 4 pour la découverte du dashboard Streamlit.">
+        
+        <div class="speaker-bar" style="border-left-color: var(--speaker-m3);">
+            <div class="speaker-info">
+                <span class="speaker-tag bg-m3">👤 Membre 3 — Ingénieur Backend & API</span>
+                <span style="font-weight: 600; font-size: 0.9rem;">Backend & API REST FastAPI</span>
+            </div>
+            <div class="timing-tag">⏱️ 2 min</div>
+        </div>
+
+        <h2>6. Backend & Endpoints d'Inférence FastAPI</h2>
+        <div class="grid-2">
+            <div class="card">
+                <h3>📡 Endpoints Disponibles</h3>
+                <ul>
+                    <li><code>GET /health</code> : Statut du service et chargement du modèle.</li>
+                    <li><code>GET /metrics</code> : Métriques détaillées et matrices de confusion.</li>
+                    <li><code>GET /sample_profiles</code> : Profils prêts à tester (Faible, Moyen, Élevé).</li>
+                    <li><code>POST /predict</code> : Prédiction unitaire avec jauge de risque.</li>
+                    <li><code>POST /predict_batch</code> : Inférence vectorisée sur un ensemble.</li>
+                    <li><code>POST /predict_csv</code> : Traitement par lot d'un fichier CSV.</li>
+                </ul>
+            </div>
+            <div class="card accent">
+                <h3>🛡️ Robustesse & Schémas Pydantic v2</h3>
+                <ul>
+                    <li>Documentation OpenAPI interactive disponible sur <code>http://localhost:8000/docs</code>.</li>
+                    <li>Validation stricte des types de données via <strong>Pydantic v2</strong> (bornes sur notes 0-100, types crédits).</li>
+                    <li>Cycle de vie moderne du serveur géré par gestionnaire de contexte <code>lifespan</code>.</li>
+                    <li>Support CORS activé pour intégration facile avec tout client web ou mobile.</li>
+                </ul>
+            </div>
+        </div>
+        <div class="speech-transition">
+            ➡️ <strong>Transition :</strong> « Je passe la main à <strong>Membre 4</strong> pour l'interface utilisateur Streamlit et le moteur de tutorat. »
+        </div>
+    </div>
+
+    <!-- ==================== SLIDE 9 : Interface Streamlit (Membre 4) ==================== -->
+    <div class="slide" data-speaker="Membre 4 — Ingénieur Frontend & UX Décisionnelle" data-tag="bg-m4" data-time="2 min"
+         data-speech="Merci Membre 3. Pour que les enseignants et tuteurs puissent facilement exploiter notre intelligence artificielle, nous avons conçu une interface interactive avec Streamlit. L'application est structurée en 5 vues ergonomiques : la première offre une exploration visuelle des données OULAD avec des graphiques Plotly ; la deuxième permet de comparer les métriques et courbes ROC des modèles ; la troisième est un simulateur où le tuteur peut renseigner un profil étudiant et voir instantanément sa jauge de risque ; la quatrième permet l'analyse par cohorte avec upload CSV ; et la cinquième rappelle les principes éthiques et pédagogiques.">
+        
+        <div class="speaker-bar" style="border-left-color: var(--speaker-m4);">
+            <div class="speaker-info">
+                <span class="speaker-tag bg-m4">👤 Membre 4 — Ingénieur Frontend & UX Décisionnelle</span>
+                <span style="font-weight: 600; font-size: 0.9rem;">Interface Utilisateur Interactive Streamlit</span>
+            </div>
+            <div class="timing-tag">⏱️ 2 min</div>
+        </div>
+
+        <h2>7. Interface Décisionnelle Streamlit</h2>
+        <p>Le tableau de bord Streamlit (<code>app/streamlit_app.py</code>) propose 5 vues complémentaires :</p>
+
+        <div class="grid-3">
+            <div class="card">
+                <h4>📊 1. Analyse Exploratoire (EDA)</h4>
+                <p style="font-size: 0.85rem;">Graphiques Plotly interactifs des distributions, de la charge de crédits et de l'activité VLE.</p>
+            </div>
+            <div class="card accent">
+                <h4>🤖 2. Comparateur de Modèles</h4>
+                <p style="font-size: 0.85rem;">Tableaux comparatifs, matrices de confusion et courbes d'importance des variables.</p>
+            </div>
+            <div class="card warning">
+                <h4>🎯 3. Simulateur Interactif</h4>
+                <p style="font-size: 0.85rem;">Formulaire en 3 volets, profils types en un clic, jauge tricolore et plan de soutien.</p>
+            </div>
+        </div>
+
+        <div class="grid-2" style="margin-top: 14px;">
+            <div class="card">
+                <h4>📁 4. Analyse par Cohorte (Batch)</h4>
+                <p style="font-size: 0.85rem;">Exploration filtrable des cohortes OULAD ou import d'un fichier CSV externe avec export des alertes.</p>
+            </div>
+            <div class="card accent">
+                <h4>📚 5. Support Pédagogique & Éthique</h4>
+                <p style="font-size: 0.85rem;">Rappel des objectifs d'accompagnement bienveillant, limites de l'IA et explications claires.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== SLIDE 10 : Moteur de Recommandations (Membre 4) ==================== -->
+    <div class="slide" data-speaker="Membre 4 — Ingénieur Frontend & UX Décisionnelle" data-tag="bg-m4" data-time="2 min"
+         data-speech="Ce qui différencie profondément EduAccess d'une simple boîte noire de Machine Learning, c'est notre moteur de recommandations pédagogiques actionnables. Prédire qu'un étudiant est à risque ne sert à rien si on n'indique pas pourquoi et comment agir. Notre système analyse les facteurs contributifs : si les clics VLE sont inférieurs à 100, il conseille une vérification proactive des accès techniques ; si une note précoce est sous la moyenne, il propose une séance de tutorat individualisé ; et en cas de retards répétés, il suggère un atelier d'organisation temporelle. Le tuteur dispose ainsi d'un plan d'action clé en main. Je donne maintenant la parole à Membre 5 pour la partie DevOps et conclusion.">
+        
+        <div class="speaker-bar" style="border-left-color: var(--speaker-m4);">
+            <div class="speaker-info">
+                <span class="speaker-tag bg-m4">👤 Membre 4 — Ingénieur Frontend & UX Décisionnelle</span>
+                <span style="font-weight: 600; font-size: 0.9rem;">Moteur de Recommandations Tutorales</span>
+            </div>
+            <div class="timing-tag">⏱️ 2 min</div>
+        </div>
+
+        <h2>8. Diagnostic Actionnable & Tutorat Personnalisé</h2>
+        <p>Transformer une probabilité statistique en un <strong>plan d'accompagnement humain</strong> :</p>
+
+        <div class="grid-2">
+            <div class="card danger">
+                <h3>Signaux Faibles Détectés</h3>
+                <ul>
+                    <li>Très faible activité VLE (&lt; 100 clics).</li>
+                    <li>Première évaluation manquante ou note &lt; 40/100.</li>
+                    <li>Devoir soumis après l'échéance officielle.</li>
+                    <li>Inscription tardive après le lancement du cours.</li>
+                    <li>Charge académique excessive (&gt; 120 crédits).</li>
+                </ul>
+            </div>
+            <div class="card accent">
+                <h3>Actions de Tutorat Recommandées</h3>
+                <ul>
+                    <li>📞 <strong>Prise de contact proactive</strong> pour vérifier l'accès au cours.</li>
+                    <li>👨‍🏫 <strong>Séance de tutorat individualisé</strong> et remise à niveau méthodologique.</li>
+                    <li>⏰ <strong>Atelier de gestion du temps</strong> et aménagement du calendrier.</li>
+                    <li>📦 <strong>Kit d'intégration accéléré</strong> pour rattraper les modules clés.</li>
+                    <li>♿ <strong>Vérification des aménagements spécifiques</strong> (tiers-temps, accessibilité).</li>
+                </ul>
+            </div>
+        </div>
+        <div class="speech-transition">
+            ➡️ <strong>Transition :</strong> « Je laisse la parole à <strong>Membre 5</strong> pour la démarche de tests, le déploiement Docker et la conclusion. »
+        </div>
+    </div>
+
+    <!-- ==================== SLIDE 11 : Tests & DevOps (Membre 5) ==================== -->
+    <div class="slide" data-speaker="Membre 5 — Lead DevOps, QA & Conclusion" data-tag="bg-m5" data-time="2 min"
+         data-speech="Merci Membre 4. Pour garantir la robustesse industrielle du projet, nous avons mis en place une suite complète de tests automatisés avec Pytest. Treize tests couvrent l'intégrité du dataset, la validité des modèles sérialisés, la cohérence des probabilités et le bon fonctionnement des endpoints HTTP de l'API. Tous nos tests passent à 100% en moins de 5 secondes. Pour le déploiement, nous avons conteneurisé l'application avec Docker et orchestré l'API et Streamlit via Docker Compose, permettant un démarrage clé en main avec docker-compose up. Nous avons aussi créé une interface CLI unifiée run_project.py qui permet d'exécuter n'importe quelle phase du projet en une seule ligne.">
+        
+        <div class="speaker-bar" style="border-left-color: var(--speaker-m5);">
+            <div class="speaker-info">
+                <span class="speaker-tag bg-m5">👤 Membre 5 — Lead DevOps, QA & Conclusion</span>
+                <span style="font-weight: 600; font-size: 0.9rem;">Tests Automatisés & Déploiement Reproductible</span>
+            </div>
+            <div class="timing-tag">⏱️ 2 min</div>
+        </div>
+
+        <h2>9. Qualité Logicielle & DevOps</h2>
+        <div class="grid-2">
+            <div class="card accent">
+                <h3>🧪 Suite Pytest (13 Tests Validés)</h3>
+                <ul>
+                    <li><strong>test_data.py :</strong> Intégrité des 22 colonnes, absence de NaN critiques.</li>
+                    <li><strong>test_models.py :</strong> Sérialisation des modèles, probabilités strictement bornées dans [0, 1].</li>
+                    <li><strong>test_api.py :</strong> Inférence HTTP unitaire et batch via <code>TestClient</code> FastAPI.</li>
+                </ul>
+                <div class="highlight-box" style="margin-top: 10px; background: #ECFDF5; border-color: #10B981;">
+                    <strong>Résultat d'exécution :</strong> 13 passed in 4.38s ✅
+                </div>
+            </div>
+            <div class="card">
+                <h3>🐳 Conteneurisation & CLI Universelle</h3>
+                <ul>
+                    <li><code>Dockerfile</code> optimisé multi-services.</li>
+                    <li><code>docker-compose.yml</code> : orchestration en un clic :
+                        <pre style="background: #1E293B; color: #38BDF8; padding: 6px 10px; border-radius: 6px; margin-top: 6px; font-size: 0.85rem;">docker-compose up --build</pre>
+                    </li>
+                    <li>Script CLI <code>run_project.py</code> pour piloter prepare, train, test, api et app.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== SLIDE 12 : Éthique & Limites (Membre 5) ==================== -->
+    <div class="slide" data-speaker="Membre 5 — Lead DevOps, QA & Conclusion" data-tag="bg-m5" data-time="1 min 30"
+         data-speech="En tant qu'ingénieurs en IA, nous accordons une importance primordiale au cadre éthique et à l'explicabilité de nos modèles. EduAccess applique le principe de l'humain dans la boucle : l'alerte algorithmique n'est qu'une indication, la décision finale appartient toujours au tuteur et à l'étudiant. De plus, nous assumons en toute transparence les limites techniques de la solution : premièrement, le problème du cold-start avant les premières interactions sur la plateforme ; deuxièmement, le fait que les études menées sur support papier ou hors connexion ne sont pas enregistrées par le VLE.">
+        
+        <div class="speaker-bar" style="border-left-color: var(--speaker-m5);">
+            <div class="speaker-info">
+                <span class="speaker-tag bg-m5">👤 Membre 5 — Lead DevOps, QA & Conclusion</span>
+                <span style="font-weight: 600; font-size: 0.9rem;">Cadre Éthique & Limites de l'IA</span>
+            </div>
+            <div class="timing-tag">⏱️ 1 min 30</div>
+        </div>
+
+        <h2>10. Principes Éthiques & Limites Reconnues</h2>
+        <div class="grid-2">
+            <div class="card warning">
+                <h3>⚖️ Principes Éthiques Fondamentaux</h3>
+                <ul>
+                    <li><strong>Bienveillance :</strong> L'alerte déclenche une proposition d'aide, jamais une sanction.</li>
+                    <li><strong>Transparence :</strong> Les facteurs explicatifs sont affichés au tuteur.</li>
+                    <li><strong>Humain dans la boucle :</strong> L'avis de l'enseignant prévaut toujours sur le score.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>🔍 Limites Techniques Reconnues</h3>
+                <ul>
+                    <li><strong>Problème du Cold-Start :</strong> Détection plus difficile avant les premières traces d'activité sur le VLE.</li>
+                    <li><strong>Activités hors plateforme :</strong> Les heures de révision sur livres papier ou supports physiques ne sont pas captées.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== SLIDE 13 : Bilan des Livrables & Clôture (Membre 5) ==================== -->
+    <div class="slide" data-speaker="Membre 5 — Lead DevOps, QA & Conclusion" data-tag="bg-m5" data-time="1 min 30"
+         data-speech="Pour conclure, nous avons l'honneur de vous présenter un projet où l'ensemble des 4 livrables exigés par le cahier des charges de l'EMSI est rigoureusement achevé : le support pédagogique avec ce diaporama interactif, le code source complet et testé, l'énoncé du TP guidé avec ses notebooks Jupyter, et sa correction détaillée pas-à-pas. Au nom de toute notre équipe de 5 étudiants, nous vous remercions vivement pour votre attention et nous sommes maintenant à votre entière disposition pour répondre à toutes vos questions.">
+        
+        <div class="speaker-bar" style="border-left-color: var(--speaker-m5);">
+            <div class="speaker-info">
+                <span class="speaker-tag bg-m5">👤 Membre 5 — Lead DevOps, QA & Conclusion</span>
+                <span style="font-weight: 600; font-size: 0.9rem;">Bilan des Livrables & Clôture</span>
+            </div>
+            <div class="timing-tag">⏱️ 1 min 30</div>
+        </div>
+
+        <div style="text-align: center; margin-top: 15px;">
+            <div style="font-size: 3rem; margin-bottom: 6px;">🎉</div>
+            <h1 style="font-size: 2.3rem;">Conclusion & Validation des Livrables</h1>
+            <p style="font-size: 1.15rem; color: #1E3A8A; font-weight: 600;">
+                Tous les livrables du Cahier des Charges sont pleinement achevés et opérationnels.
+            </p>
+            <div style="max-width: 700px; margin: 15px auto; background: white; padding: 18px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); text-align: left;">
+                <p>✅ <strong>Livrable 1 : Support pédagogique</strong> (Cours complet & Diaporama interactif)</p>
+                <p>✅ <strong>Livrable 2 : Code source complet</strong> (Pipeline ETL, Modèles ML, API FastAPI, UI Streamlit, Docker, Pytest)</p>
+                <p>✅ <strong>Livrable 3 : Énoncé du TP guidé</strong> (Étapes pas-à-pas, prérequis et questions Jupyter)</p>
+                <p>✅ <strong>Livrable 4 : Correction du TP</strong> (Notebook corrigé exécutable et interprétations)</p>
+            </div>
+            <h3 style="color: #1E293B; margin-top: 15px;">Merci pour votre attention ! Avez-vous des questions ?</h3>
+        </div>
+    </div>
+</main>
+
+<!-- ==================== Prompteur / Speech Drawer ==================== -->
+<div id="speechDrawer">
+    <div class="drawer-header">
+        <div class="drawer-speaker-title">
+            <span>🎙️ Prompteur Soutenance</span>
+            <span id="drawerSpeakerTag" class="speaker-tag bg-m1" style="font-size: 0.8rem;">Membre 1</span>
+        </div>
+        <button class="drawer-close" onclick="toggleSpeech()">✕</button>
+    </div>
+    <div class="speech-text" id="drawerSpeechText">
+        Discours orateur pour cette diapositive...
+    </div>
+</div>
+
+<!-- ==================== Footer Controls ==================== -->
+<footer>
+    <div class="controls">
+        <button class="btn-nav" id="prevBtn" onclick="changeSlide(-1)">◀ Précédent</button>
+        <button class="btn-nav" id="nextBtn" onclick="changeSlide(1)">Suivant ▶</button>
+    </div>
+    <div class="slide-counter" id="slideCounter">Slide 1 / 13</div>
+    <div style="font-size: 0.85rem; color: #94A3B8;">
+        Temps total estimé : <strong>~11 min</strong> | Raccourcis : ⬅️ ➡️ Navigation, <strong>[S]</strong> Prompteur
+    </div>
+</footer>
+
+<script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+    const counter = document.getElementById('slideCounter');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const speechDrawer = document.getElementById('speechDrawer');
+    const drawerSpeakerTag = document.getElementById('drawerSpeakerTag');
+    const drawerSpeechText = document.getElementById('drawerSpeechText');
+
+    function updateSlide() {
+        slides.forEach((s, idx) => {
+            s.classList.toggle('active', idx === currentSlide);
+        });
+        counter.textContent = `Slide ${currentSlide + 1} / ${totalSlides}`;
+        prevBtn.disabled = currentSlide === 0;
+        nextBtn.disabled = currentSlide === totalSlides - 1;
+
+        // Mise à jour du contenu du prompteur
+        const activeSlide = slides[currentSlide];
+        const speaker = activeSlide.getAttribute('data-speaker') || 'Équipe';
+        const tagClass = activeSlide.getAttribute('data-tag') || 'bg-m1';
+        const speech = activeSlide.getAttribute('data-speech') || 'Notes pour cette slide.';
+
+        drawerSpeakerTag.textContent = speaker;
+        drawerSpeakerTag.className = 'speaker-tag ' + tagClass;
+        drawerSpeechText.innerHTML = speech;
+    }
+
+    function changeSlide(direction) {
+        currentSlide += direction;
+        if (currentSlide < 0) currentSlide = 0;
+        if (currentSlide >= totalSlides) currentSlide = totalSlides - 1;
+        updateSlide();
+    }
+
+    function toggleSpeech() {
+        speechDrawer.classList.toggle('open');
+    }
+
+    // Raccourcis clavier
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === ' ') {
+            if (currentSlide < totalSlides - 1) changeSlide(1);
+        } else if (e.key === 'ArrowLeft') {
+            if (currentSlide > 0) changeSlide(-1);
+        } else if (e.key.toLowerCase() === 's') {
+            toggleSpeech();
+        } else if (e.key === 'Escape') {
+            speechDrawer.classList.remove('open');
+        }
+    });
+
+    updateSlide();
+</script>
+
+</body>
+</html>

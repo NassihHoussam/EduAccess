@@ -1,0 +1,40 @@
+{
+    "categorical_features": [
+        "code_module",
+        "gender",
+        "region",
+        "highest_education",
+        "imd_band",
+        "age_band",
+        "disability"
+    ],
+    "numerical_features": [
+        "num_of_prev_attempts",
+        "studied_credits",
+        "date_registration",
+        "pre_course_clicks",
+        "early_30_clicks",
+        "total_clicks",
+        "active_days",
+        "early_assessments_count",
+        "early_avg_score",
+        "early_late_submissions",
+        "total_assessments_submitted",
+        "overall_avg_score",
+        "min_score",
+        "late_submissions_count",
+        "failed_assessments_count"
+    ],
+    "target_column": "is_at_risk",
+    "total_rows": 32593,
+    "class_counts": {
+        "1": 17208,
+        "0": 15385
+    },
+    "final_result_distribution": {
+        "Pass": 12361,
+        "Withdrawn": 10156,
+        "Fail": 7052,
+        "Distinction": 3024
+    }
+}

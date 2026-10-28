@@ -1,0 +1,281 @@
+{
+    "best_model": "Gradient Boosting",
+    "models": {
+        "Logistic Regression": {
+            "name": "Logistic Regression",
+            "test_metrics": {
+                "accuracy": 0.9277,
+                "precision": 0.9564,
+                "recall": 0.9044,
+                "f1_score": 0.9297,
+                "roc_auc": 0.9735
+            },
+            "cv_metrics_mean": {
+                "accuracy": 0.9252,
+                "precision": 0.9471,
+                "recall": 0.9091,
+                "f1_score": 0.9277,
+                "roc_auc": 0.9735
+            },
+            "confusion_matrix": [
+                [
+                    2935,
+                    142
+                ],
+                [
+                    329,
+                    3113
+                ]
+            ],
+            "classification_report": {
+                "0": {
+                    "precision": 0.899203431372549,
+                    "recall": 0.9538511537211569,
+                    "f1-score": 0.9257214950323293,
+                    "support": 3077.0
+                },
+                "1": {
+                    "precision": 0.9563748079877112,
+                    "recall": 0.9044160371876816,
+                    "f1-score": 0.9296700014932059,
+                    "support": 3442.0
+                },
+                "accuracy": 0.9277496548550391,
+                "macro avg": {
+                    "precision": 0.9277891196801301,
+                    "recall": 0.9291335954544193,
+                    "f1-score": 0.9276957482627676,
+                    "support": 6519.0
+                },
+                "weighted avg": {
+                    "precision": 0.9293896375865984,
+                    "recall": 0.9277496548550391,
+                    "f1-score": 0.9278062870615265,
+                    "support": 6519.0
+                }
+            }
+        },
+        "Random Forest": {
+            "name": "Random Forest",
+            "test_metrics": {
+                "accuracy": 0.9239,
+                "precision": 0.9626,
+                "recall": 0.8905,
+                "f1_score": 0.9251,
+                "roc_auc": 0.9787
+            },
+            "cv_metrics_mean": {
+                "accuracy": 0.9212,
+                "precision": 0.9578,
+                "recall": 0.8899,
+                "f1_score": 0.9226,
+                "roc_auc": 0.9767
+            },
+            "confusion_matrix": [
+                [
+                    2958,
+                    119
+                ],
+                [
+                    377,
+                    3065
+                ]
+            ],
+            "classification_report": {
+                "0": {
+                    "precision": 0.8869565217391304,
+                    "recall": 0.9613259668508287,
+                    "f1-score": 0.9226450405489707,
+                    "support": 3077.0
+                },
+                "1": {
+                    "precision": 0.9626256281407035,
+                    "recall": 0.8904706565950029,
+                    "f1-score": 0.9251433745849683,
+                    "support": 3442.0
+                },
+                "accuracy": 0.9239147108452217,
+                "macro avg": {
+                    "precision": 0.924791074939917,
+                    "recall": 0.9258983117229158,
+                    "f1-score": 0.9238942075669695,
+                    "support": 6519.0
+                },
+                "weighted avg": {
+                    "precision": 0.9269094384800746,
+                    "recall": 0.9239147108452217,
+                    "f1-score": 0.9239641486563345,
+                    "support": 6519.0
+                }
+            }
+        },
+        "Gradient Boosting": {
+            "name": "Gradient Boosting",
+            "test_metrics": {
+                "accuracy": 0.9304,
+                "precision": 0.9588,
+                "recall": 0.907,
+                "f1_score": 0.9322,
+                "roc_auc": 0.9812
+            },
+            "cv_metrics_mean": {
+                "accuracy": 0.9328,
+                "precision": 0.96,
+                "recall": 0.9107,
+                "f1_score": 0.9347,
+                "roc_auc": 0.9811
+            },
+            "confusion_matrix": [
+                [
+                    2943,
+                    134
+                ],
+                [
+                    320,
+                    3122
+                ]
+            ],
+            "classification_report": {
+                "0": {
+                    "precision": 0.9019307385841251,
+                    "recall": 0.956451088722782,
+                    "f1-score": 0.928391167192429,
+                    "support": 3077.0
+                },
+                "1": {
+                    "precision": 0.9588452088452089,
+                    "recall": 0.9070307960488089,
+                    "f1-score": 0.9322185727082711,
+                    "support": 3442.0
+                },
+                "accuracy": 0.930357416781715,
+                "macro avg": {
+                    "precision": 0.930387973714667,
+                    "recall": 0.9317409423857954,
+                    "f1-score": 0.93030486995035,
+                    "support": 6519.0
+                },
+                "weighted avg": {
+                    "precision": 0.9319812995043046,
+                    "recall": 0.930357416781715,
+                    "f1-score": 0.9304120185170998,
+                    "support": 6519.0
+                }
+            }
+        }
+    },
+    "feature_importances": [
+        {
+            "feature": "total_assessments_submitted",
+            "importance": 0.22838
+        },
+        {
+            "feature": "overall_avg_score",
+            "importance": 0.0641
+        },
+        {
+            "feature": "code_module",
+            "importance": 0.04515
+        },
+        {
+            "feature": "active_days",
+            "importance": 0.0449
+        },
+        {
+            "feature": "early_assessments_count",
+            "importance": 0.02331
+        },
+        {
+            "feature": "total_clicks",
+            "importance": 0.00878
+        },
+        {
+            "feature": "early_30_clicks",
+            "importance": 0.0046
+        },
+        {
+            "feature": "early_avg_score",
+            "importance": 0.0014
+        },
+        {
+            "feature": "late_submissions_count",
+            "importance": 0.0004
+        },
+        {
+            "feature": "pre_course_clicks",
+            "importance": 0.00017
+        },
+        {
+            "feature": "disability",
+            "importance": 0.00012
+        },
+        {
+            "feature": "num_of_prev_attempts",
+            "importance": -2e-05
+        },
+        {
+            "feature": "highest_education",
+            "importance": -5e-05
+        },
+        {
+            "feature": "imd_band",
+            "importance": -0.00012
+        },
+        {
+            "feature": "region",
+            "importance": -0.0002
+        },
+        {
+            "feature": "gender",
+            "importance": -0.00027
+        },
+        {
+            "feature": "min_score",
+            "importance": -0.00035
+        },
+        {
+            "feature": "failed_assessments_count",
+            "importance": -0.00052
+        },
+        {
+            "feature": "studied_credits",
+            "importance": -0.00055
+        },
+        {
+            "feature": "early_late_submissions",
+            "importance": -0.00055
+        },
+        {
+            "feature": "age_band",
+            "importance": -0.00113
+        },
+        {
+            "feature": "date_registration",
+            "importance": -0.00221
+        }
+    ],
+    "features_list": [
+        "code_module",
+        "gender",
+        "region",
+        "highest_education",
+        "imd_band",
+        "age_band",
+        "disability",
+        "num_of_prev_attempts",
+        "studied_credits",
+        "date_registration",
+        "pre_course_clicks",
+        "early_30_clicks",
+        "total_clicks",
+        "active_days",
+        "early_assessments_count",
+        "early_avg_score",
+        "early_late_submissions",
+        "total_assessments_submitted",
+        "overall_avg_score",
+        "min_score",
+        "late_submissions_count",
+        "failed_assessments_count"
+    ]
+}

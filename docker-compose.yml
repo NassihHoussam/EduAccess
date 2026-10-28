@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  # Service API REST FastAPI
+  api:
+    build: .
+    container_name: eduaccess-api
+    command: uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    environment:
+      - PYTHONPATH=/app
+    restart: unless-stopped
+
+  # Service Frontend Streamlit
+  streamlit:
+    build: .
+    container_name: eduaccess-dashboard
+    command: streamlit run app/streamlit_app.py --server.port=8501 --server.address=0.0.0.0
+    ports:
+      - "8501:8501"
+    volumes:
+      - .:/app
+    environment:
+      - PYTHONPATH=/app
+    depends_on:
+      - api
+    restart: unless-stopped
